@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 docker run -dt --name tesseract-cn tesseract
 TMP=TMP_$$_$(date +"%N")
 docker exec -it tesseract-cn mkdir \-p ./$TMP/
