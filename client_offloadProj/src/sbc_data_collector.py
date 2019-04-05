@@ -19,7 +19,11 @@ STRESSNG_CMD = "stress-ng -c 0 -l "
 PWD = os.getcwd()
 PWD = PWD + '/client_offloadProj'
 PATH_TO_FILE = PWD + '/data/input_files'
-PATH_TO_CSV_FILE = PWD + '/data/'
+PATH_OCR_OUTPUT = PWD + '/data/output/'
+PATH_TO_FILE_DIR = PWD + '/data/input/'
+PATH_TO_CSV_FILE = PWD + '/data/csv_local_exec_time/'
+PATH_TO_CPUBWMON_FILE = PWD + '/data/cpu_bw_mon.txt'
+
 
 # list of all the names of the input image files for the application
 FILE_NAMES = ['image.jpg']
@@ -45,31 +49,23 @@ def append_csv_file(row):
 # End of function append_csv_file()
 
 def execute_input(file_name):
-    # cpu_util_daemon = "python3 " + ""
-
-    # # start calculating the utlization time in a different background process
-    # util_process = subprocess.Popen(cpu_util_daemon, shell=True)
-
     # initiate the start time to calculate the execution time of the desired application 
     start = time.time()
     
     # run the tesseract-ocr application with the input (from parameter)
-    
+    bash_command = 'tesseract ' + PATH_TO_FILE_DIR + file_name + ' ' + PATH_OCR_OUTPUT + file_name
+    os.system(bash_command)
 
     # end time of the application
     end = time.time()
 
     execution_time = end - start
 
-    # note cpu utilization for each second until the program completes execution
-    # once the execution is completed, note the execution time
-    # calculate the average_cpu_workload
-    # to execute input: for each input, calculate average cpu workload
-
-    average_cpu_workload = 0
+    # Fetch average cpu utilization from the cpu_bw_mon.txt file
+    with open(PATH_TO_CPUBWMON_FILE) as cpu_mon:
+        average_cpu_workload = cpu_mon.readline().split()[1]
 
     return execution_time, average_cpu_workload
-
 
 
 def data_collector():
@@ -102,10 +98,12 @@ def data_collector():
     # End of 'for loop' for 'stressng_values'
 
     # count lines in the csv file
-    with open(PATH_TO_CSV_FILE) as csv_file:
-        num_of_lines = sum(1 for line in csv_file)
+    # with open(PATH_TO_CSV_FILE) as csv_file:
+    #     num_of_lines = sum(1 for line in csv_file)
 
-    print('Written (input_size, average_cpu_workload, execution_time) for ' + str(num_of_lines-1) + ' image files in csv file')
+    # print('Written (input_size, average_cpu_workload, execution_time) for ' + str(num_of_lines-1) + ' image files in csv file')
+
+
 # End of function data_collector()
 
 
@@ -113,31 +111,3 @@ def data_collector():
 if __name__ == "__main__":
     create_csv_file()
     data_collector()
-
-
-
-#############################################################################
-
-
-# def exponential_moving_average(execution_time):
-
-#     # count lines in the csv file
-#     with open(PATH_TO_CSV_FILE) as csv_file:
-#         num_of_lines = sum(1 for line in csv_file)
-
-
-
-
-#     # sum = 0
-#     # N = 5
-#     # result = list( 0 for x in l)
-
-#     # for i in range( 0, N ):
-#     #     sum = sum + l[i]
-#     #     result[i] = sum / (i+1)
-
-#     # for i in range( N, len(l) ):
-#     #     sum = sum - l[i-N] + l[i]
-#     #     result[i] = sum / N
-#     # print(result)
-#     return 10

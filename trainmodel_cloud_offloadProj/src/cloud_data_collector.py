@@ -15,14 +15,14 @@ from os.path import isfile, join
 # Path to the files required by the program: Here, PWD is offloadProj
 PWD = os.getcwd()
 PWD = PWD + '/trainmodel_cloud_offloadProj'
-PATH_OCR_OUTPUT = PWD + '/data/ocr_output/'
-PATH_TO_FILE_DIR = PWD + '/data/test_images/'
+PATH_OCR_OUTPUT = PWD + '/data/output/'
+PATH_TO_FILE_DIR = PWD + '/data/input/'
 PATH_TO_CSV_FILE = PWD + '/data/csv_remote_exec_time/'
 
 # list of all the names of the input image files for the application
-# FILE_NAMES = [filename for filename in listdir(PATH_TO_FILE_DIR) if isfile(join(PATH_TO_FILE_DIR, filename))]
-FILE_NAMES = ['001.png']
-FILE_NAMES.sort()
+FILE_NAMES = [filename for filename in listdir(PATH_TO_FILE_DIR) if isfile(join(PATH_TO_FILE_DIR, filename))]
+# FILE_NAMES = ['001.png', '002.png']
+FILE_NAMES.sort(reverse=True)
 # print(FILE_NAMES)
 
 
@@ -42,20 +42,15 @@ def create_csv_file():
 
 
 def execute_input(filename):
-    # Run bash script which executes docker commands
     start = time.time()
-
+    # Run bash script which executes docker commands
     # command to run the bash script which contains docker instructions
-    # Arg 0 is PWD + '/scripts/run_app_on_docker.sh'
-    # Arg 1 is PATH_TO_FILE_DIR 
-    # Arg 2 is filename
-    bash_command = 'sh ' + PWD + '/scripts/run_app_on_docker.sh' + ' ' + PATH_TO_FILE_DIR + ' ' + filename + ' ' + PATH_OCR_OUTPUT
+    bash_command = 'sh ' + PWD + '/scripts/run.sh' + ' ' + filename
+    # sbc_command = 'tesseract ' + PATH_TO_FILE_DIR + filename + ' ' + PATH_OCR_OUTPUT + filename
     # print(bash_command)
     
-    # execute bash command using subprocess
-    # app_on_docker_process = 
-    subprocess.Popen(bash_command, shell=True)
-    # print(app_on_docker_process)
+    # execute bash command using os.system
+    os.system(bash_command)
 
     end = time.time()
     exec_time = end - start
