@@ -14,7 +14,10 @@ PATH_TO_MAXBWMON_FILE = SBC_PWD + '/data/max_bw_mon_now.csv'
 
 
 
+wl_sbc_all = []
 
+
+total_time = []
 
 
 def start_daemon():
@@ -68,9 +71,9 @@ def decision_engine():
     pass
 
 
-def execute_workload():
-
-    # print(PATH_WORKLOAD)
+def execute_workload(workload_number):
+    wl_sbc = []
+    print(PATH_WORKLOAD)
     # print(FILE_NAMES)
 
     # run sbc-only
@@ -78,33 +81,40 @@ def execute_workload():
 
     for filename in FILE_NAMES:
         tesseract_command = 'tesseract ' + PATH_WORKLOAD + filename + ' ' + PATH_OCR_OUTPUT + filename
-        os.system(tesseract_command)
+        st_task = time.time()
+        # os.system(tesseract_command)
+        # print(workload_number, filename)
+        ed_task = time.time()
+
+        wl_sbc.append(ed_task - st_task)
+        # wl.append(filename)
 
     sbc_end = time.time()
     sbc_time = sbc_end - sbc_start
+    wl_sbc_all.append(wl_sbc)
 
 
-    # run remote-always
-    remote_start = time.time()
+    # # run remote-always
+    # remote_start = time.time()
 
-    for filename in FILE_NAMES:
+    # for filename in FILE_NAMES:
 
-        # send input file to remote server # execute using tesseract in the docker # get the output back
-        remote_run_command = 'sh ' + SBC_PWD + '/scripts/run.sh'
-        os.system(remote_run_command)
+    #     # send input file to remote server # execute using tesseract in the docker # get the output back
+    #     remote_run_command = 'sh ' + SBC_PWD + '/scripts/run.sh'
+    #     os.system(remote_run_command)
 
-        # tesseract_command = 'tesseract ' + PATH_WORKLOAD + filename + ' ' + PATH_OCR_OUTPUT + filename
-        # os.system(tesseract_command)
+    #     # tesseract_command = 'tesseract ' + PATH_WORKLOAD + filename + ' ' + PATH_OCR_OUTPUT + filename
+    #     # os.system(tesseract_command)
 
-    remote_end = time.time()
-    remote_time = remote_end - remote_start
+    # remote_end = time.time()
+    # remote_time = remote_end - remote_start
 
-    # run algorithm
-    de_start = time.time()
+    # # run algorithm
+    # de_start = time.time()
 
 
-    de_end = time.time()
-    de_time = de_end - de_start
+    # de_end = time.time()
+    # de_time = de_end - de_start
 
 
 
@@ -113,8 +123,8 @@ def execute_workload():
 
     # print observations
     print("SBC-only: ", sbc_time)
-    print("Remote-always: ", remote_time)
-    print("Using implemented algorithm: ", de_time)
+    # print("Remote-always: ", remote_time)
+    # print("Using implemented algorithm: ", de_time)
 
 if __name__ == "__main__":
     # start_daemons()
@@ -122,7 +132,10 @@ if __name__ == "__main__":
 
     for workload_number in range(1,4):
         get_filenames(workload_number)
-        execute_workload()
-    
+        execute_workload(workload_number)
+    print(wl_sbc_all[0])
+    print(wl_sbc_all[1])
+    print(wl_sbc_all[2])
+
     # stop_docker()
     # generate_test_summary()
