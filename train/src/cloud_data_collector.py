@@ -47,8 +47,7 @@ def execute_input(filename):
 
     # command to run the bash script which contains docker instructions
     bash_command = 'sh ' + PWD + '/scripts/run.sh' + ' ' + filename
-#     bash_command = 'tesseract ' + PATH_IMAGE_FILE + filename + ' ' + PATH_OCR_OUTPUT + filename
-#     print(bash_command)
+    # print(bash_command)
     
     # execute bash command using os.system
     os.system(bash_command)

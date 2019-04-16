@@ -9,6 +9,6 @@ train/data/remote_train_dataset/old
 sbc/data/train_data
 sbc/data/cpu_bw_mon.csv
 sbc/data/max_bw_mon.csv
-sbc/data/workloads/workload_i
-sbc/data/workloads/workload_ii
-sbc/data/workloads/workload_iii
+sbc/data/workloads/workload_1
+sbc/data/workloads/workload_2
+sbc/data/workloads/workload_3
