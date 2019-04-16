@@ -92,7 +92,7 @@ def execute_workload(workload_number):
     sbc_end = time.time()
     sbc_time = sbc_end - sbc_start
     wl_sbc_all.append(wl_sbc)
-
+    total_time.append(sbc_time)	
 
     # # run remote-always
     # remote_start = time.time()
@@ -136,6 +136,7 @@ if __name__ == "__main__":
     print(wl_sbc_all[0])
     print(wl_sbc_all[1])
     print(wl_sbc_all[2])
+    print(total_time)
 
     # stop_docker()
     # generate_test_summary()
