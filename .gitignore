@@ -1,9 +1,6 @@
-cloud_offloadProj/data
-trainmodel_cloud_offloadProj/data
-
-
-# client_offloadProj/data
-client_offloadProj/data/archive
-client_offloadProj/data/workloads/workload_i
-client_offloadProj/data/workloads/workload_ii
-client_offloadProj/data/workloads/workload_iii
+remote/data
+train/data
+sbc/data/archive
+sbc/data/workloads/workload_i
+sbc/data/workloads/workload_ii
+sbc/data/workloads/workload_iii
