@@ -1,3 +1,9 @@
-client_offloadProj/data
 cloud_offloadProj/data
 trainmodel_cloud_offloadProj/data
+
+
+# client_offloadProj/data
+client_offloadProj/data/archive
+client_offloadProj/data/workloads/workload_i
+client_offloadProj/data/workloads/workload_ii
+client_offloadProj/data/workloads/workload_iii
