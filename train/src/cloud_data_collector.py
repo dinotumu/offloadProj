@@ -4,38 +4,39 @@
 import os
 import csv
 import time
-import datetime
 import subprocess
+import datetime
 from os import listdir
 from os.path import isfile, join
 
-
 # define variables
-
 # Path to the files required by the program: Here, PWD is offloadProj
-PWD = os.getcwd()
-PWD = PWD + '/trainmodel_cloud_offloadProj'
-PATH_OCR_OUTPUT = PWD + '/data/output/'
-PATH_TO_FILE_DIR = PWD + '/data/input/'
-PATH_TO_CSV_FILE = PWD + '/data/csv_remote_exec_time/'
+PWD = os.getcwd() + '/train'
+PATH_OCR_OUTPUT = PWD + '/data/ocr_output/'
+PATH_IMAGE_FILE = PWD + '/data/train_data/'
+PATH_DATASET_FILE = PWD + '/data/remote_train_dataset/'
 
 # list of all the names of the input image files for the application
-FILE_NAMES = [filename for filename in listdir(PATH_TO_FILE_DIR) if isfile(join(PATH_TO_FILE_DIR, filename))]
-# FILE_NAMES = ['001.png', '002.png']
-FILE_NAMES.sort(reverse=True)
-# print(FILE_NAMES)
+FILE_NAMES = [filename for filename in listdir(PATH_IMAGE_FILE) if isfile(join(PATH_IMAGE_FILE, filename))]
+FILE_NAMES_1 = [i for i in FILE_NAMES[:50]]
+# FILE_NAMES_2 = [i for i in FILE_NAMES[51:100]]
+# FILE_NAMES_3 = [i for i in FILE_NAMES[101:150]]
+# FILE_NAMES_4 = [i for i in FILE_NAMES[151:180]]
+# FILE_NAMES_5 = [i for i in FILE_NAMES[180:]]
+
+# print(FILE_NAMES_1)
 
 
 def create_csv_file():
     now = datetime.datetime.now()
-    # for a custom filename to a csv file: "time_date.csv"
-    DATE_TIME = str(now.hour) + '.' + str(now.minute) + '.' + str(now.second) + '_' + str(now.day) + '.' + str(now.month) + '.' + str(now.year) 
+    # for a custom filename to a csv file: "date_time.csv"
+    DATE_TIME = str(now.day) + '.' + str(now.month) + '.' + str(now.year) + '_' + str(now.hour) + '.' + str(now.minute) + '.' + str(now.second)
     
-    # edit global variable "PATH_TO_CSV_FILE"
-    global PATH_TO_CSV_FILE
-    PATH_TO_CSV_FILE = PATH_TO_CSV_FILE + DATE_TIME + '.csv'
-    # print(PATH_TO_CSV_FILE)
-    with open(PATH_TO_CSV_FILE, 'w') as csv_file:
+    # edit global variable "PATH_DATASET_FILE"
+    global PATH_DATASET_FILE
+    PATH_DATASET_FILE = PATH_DATASET_FILE + DATE_TIME + '.csv'
+    # print(PATH_DATASET_FILE)
+    with open(PATH_DATASET_FILE, 'w') as csv_file:
         file_writer = csv.writer(csv_file, delimiter=',', quotechar='|', quoting=csv.QUOTE_MINIMAL)
         file_writer.writerow(['file_name', 'time_stamp', 'input_size', 'execution_time'])
 # End of function create_csv_file()
@@ -43,11 +44,11 @@ def create_csv_file():
 
 def execute_input(filename):
     start = time.time()
-    # Run bash script which executes docker commands
+
     # command to run the bash script which contains docker instructions
     bash_command = 'sh ' + PWD + '/scripts/run.sh' + ' ' + filename
-    # sbc_command = 'tesseract ' + PATH_TO_FILE_DIR + filename + ' ' + PATH_OCR_OUTPUT + filename
-    # print(bash_command)
+#     bash_command = 'tesseract ' + PATH_IMAGE_FILE + filename + ' ' + PATH_OCR_OUTPUT + filename
+#     print(bash_command)
     
     # execute bash command using os.system
     os.system(bash_command)
@@ -58,20 +59,18 @@ def execute_input(filename):
 # End of function execute_input()
 
 
-def append_csv_file(row):
-    with open(PATH_TO_CSV_FILE,'a') as csv_file:
-        file_writer = csv.writer(csv_file)
-        file_writer.writerow(row)
-# End of function append_csv_file()
-
-
 def data_collector():
+
+    # start docker container    
+    start_command = 'sh ' + PWD + '/scripts/start.sh'
+    os.system(start_command)
+
     # For each file name in the list, run the tesseract docker container 
-    for filename in FILE_NAMES:
-        PATH_TO_FILE = PATH_TO_FILE_DIR + filename
+    for filename in FILE_NAMES_1:
+        PATH_WITH_FILENAME = PATH_IMAGE_FILE + filename
 
         # get input_size
-        input_size = os.path.getsize(PATH_TO_FILE)
+        input_size = os.path.getsize(PATH_WITH_FILENAME)
 
         # note time stamp before starting the execution
         time_stamp = time.time()
@@ -81,8 +80,18 @@ def data_collector():
 
         # finally, write (input_size, average_cpu_workload, execution_time) to the csv file
         row = [filename, time_stamp, input_size, execution_time]
-        append_csv_file(row)
+        
+        # Append the csv file with values
+        with open(PATH_DATASET_FILE,'a') as csv_file:
+            file_writer = csv.writer(csv_file)
+            file_writer.writerow(row)
+    
     # End of 'for loop' for 'execute_input'
+
+
+    # stop docker container    
+    stop_command = 'sh ' + PWD + '/scripts/stop.sh'
+    os.system(stop_command)
 
 # End of function data_collector()
 

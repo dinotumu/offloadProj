@@ -4,9 +4,11 @@
 import os
 import csv
 import time
-import datetime
 import numpy
+import datetime
 import subprocess
+from os import listdir
+from os.path import isfile, join
 
 # define variables
 tmp_util_data = list()
@@ -17,17 +19,19 @@ STRESSNG_CMD = "stress-ng -c 0 -l "
 
 # Path to the files required by the program: Under the asssumption that PWD is offloadProj
 PWD = os.getcwd()
-PWD = PWD + '/client_offloadProj'
-PATH_TO_FILE = PWD + '/data/input_files'
+PWD = PWD + '/sbc'
+PATH_TO_FILE = PWD + '/data/train_data'
 PATH_OCR_OUTPUT = PWD + '/data/output/'
 PATH_TO_FILE_DIR = PWD + '/data/input/'
 PATH_TO_CSV_FILE = PWD + '/data/csv_local_exec_time/'
-PATH_TO_CPUBWMON_FILE = PWD + '/data/cpu_bw_mon.txt'
+PATH_TO_CPUBWMON_FILE = PWD + '/data/cpu_bw_mon_now.csv'
+
 
 
 # list of all the names of the input image files for the application
-FILE_NAMES = ['image.jpg']
-
+FILE_NAMES = [filename for filename in listdir(PATH_TO_FILE_DIR) if isfile(join(PATH_TO_FILE_DIR, filename))]
+# FILE_NAMES = ['001.png', '002.png']
+# print(FILE_NAMES)
 
 def create_csv_file():
     now = datetime.datetime.now()
@@ -58,14 +62,9 @@ def execute_input(file_name):
 
     # end time of the application
     end = time.time()
-
     execution_time = end - start
-
-    # Fetch average cpu utilization from the cpu_bw_mon.txt file
-    with open(PATH_TO_CPUBWMON_FILE) as cpu_mon:
-        average_cpu_workload = cpu_mon.readline().split()[1]
-
-    return execution_time, average_cpu_workload
+    
+    return execution_time
 
 
 def data_collector():
@@ -82,10 +81,14 @@ def data_collector():
         # for each stress-ng, execute all inputs
         for file_name in FILE_NAMES:
             # get input_size
-            input_size = os.path.getsize(PATH_TO_FILE + '/' + file_name)
+            input_size = os.path.getsize(PATH_TO_FILE + file_name)
 
             # invoke execute_input(file_name); get (execution_time, average_cpu_workload) as return value
-            execution_time, average_cpu_workload = execute_input(file_name)
+            execution_time = execute_input(file_name)
+
+            # Fetch average cpu utilization from the cpu_bw_mon_now.csv file
+            with open(PATH_TO_CPUBWMON_FILE) as cpu_mon:
+                average_cpu_workload = cpu_mon.readline().split()[1]
 
             # finally, write (input_size, average_cpu_workload, execution_time) to the csv file
             row = [file_name, input_size, execution_time, average_cpu_workload]
@@ -95,7 +98,11 @@ def data_collector():
         # Terminate the stress-ng process after running for all the inputs for a particular (stressng_value) 
         stressng_process.terminate()
         print('Process Terminated')
+
     # End of 'for loop' for 'stressng_values'
+
+
+
 
     # count lines in the csv file
     # with open(PATH_TO_CSV_FILE) as csv_file:
