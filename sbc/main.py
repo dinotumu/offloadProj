@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 
 import os
+import csv
 import time
 from os import listdir
 from os.path import isfile, join
@@ -12,13 +13,8 @@ PATH_OCR_OUTPUT = SBC_PWD + '/data/ocr_output/'
 PATH_TO_CPUBWMON_FILE = SBC_PWD + '/data/cpu_bw_mon_now.csv'
 PATH_TO_MAXBWMON_FILE = SBC_PWD + '/data/max_bw_mon_now.csv'
 
-
-
 wl_sbc_all = []
-
-
 total_time = []
-
 
 def start_daemon():
     # start daemons on sbc
@@ -73,7 +69,7 @@ def decision_engine():
 
 def execute_workload(workload_number):
     wl_sbc = []
-    print(PATH_WORKLOAD)
+    # print(PATH_WORKLOAD)
     # print(FILE_NAMES)
 
     # run sbc-only
@@ -122,7 +118,7 @@ def execute_workload(workload_number):
 
 
     # print observations
-    print("SBC-only: ", sbc_time)
+    # print("SBC-only: ", sbc_time)
     # print("Remote-always: ", remote_time)
     # print("Using implemented algorithm: ", de_time)
 
@@ -133,10 +129,14 @@ if __name__ == "__main__":
     for workload_number in range(1,4):
         get_filenames(workload_number)
         execute_workload(workload_number)
-    print(wl_sbc_all[0])
-    print(wl_sbc_all[1])
-    print(wl_sbc_all[2])
-    print(total_time)
+
+
+    with open('text.csv','a') as csv_file:
+        file_writer = csv.writer(csv_file)
+        file_writer.writerow(wl_sbc_all[0])
+        file_writer.writerow(wl_sbc_all[1])
+        file_writer.writerow(wl_sbc_all[2])
+        file_writer.writerow(total_time)
 
     # stop_docker()
     # generate_test_summary()
