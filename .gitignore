@@ -1,4 +1,5 @@
 # docker
+docker/data/output
 docker/scripts/quick_test_1.sh
 docker/scripts/quick_test_2.sh
 
