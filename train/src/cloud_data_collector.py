@@ -18,14 +18,6 @@ PATH_DATASET_FILE = PWD + '/data/remote_train_dataset/'
 
 # list of all the names of the input image files for the application
 FILE_NAMES = [filename for filename in listdir(PATH_IMAGE_FILE) if isfile(join(PATH_IMAGE_FILE, filename))]
-FILE_NAMES_1 = [i for i in FILE_NAMES[:50]]
-# FILE_NAMES_2 = [i for i in FILE_NAMES[51:100]]
-# FILE_NAMES_3 = [i for i in FILE_NAMES[101:150]]
-# FILE_NAMES_4 = [i for i in FILE_NAMES[151:180]]
-# FILE_NAMES_5 = [i for i in FILE_NAMES[180:]]
-
-# print(FILE_NAMES_1)
-
 
 def create_csv_file():
     now = datetime.datetime.now()
@@ -65,7 +57,7 @@ def data_collector():
     os.system(start_command)
 
     # For each file name in the list, run the tesseract docker container 
-    for filename in FILE_NAMES_1:
+    for filename in FILE_NAMES:
         PATH_WITH_FILENAME = PATH_IMAGE_FILE + filename
 
         # get input_size

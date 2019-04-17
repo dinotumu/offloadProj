@@ -2,6 +2,7 @@ remote/data
 
 
 train/data/ocr_output
+train/data/train_data_1
 train/data/train_data
 train/data/remote_train_dataset/old
 
@@ -9,6 +10,7 @@ train/data/remote_train_dataset/old
 sbc/data/train_data
 sbc/data/cpu_bw_mon.csv
 sbc/data/max_bw_mon.csv
+sbc/data/workloads/Old
 sbc/data/workloads/workload_1
 sbc/data/workloads/workload_2
 sbc/data/workloads/workload_3
