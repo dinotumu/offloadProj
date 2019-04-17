@@ -1,6 +1,6 @@
 #!/bin/sh
 
-PWD='/home/dinotumu/Documents/offloadProj/train'
+PWD=$(pwd)'/remote'
 FILE_NAME=$1
 FILE_PATH=$PWD'/data/train_data/'$FILE_NAME
 # echo $FILE_PATH

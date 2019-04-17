@@ -8,7 +8,9 @@ docker/scripts/quick_test_2.sh
 remote/data/archive
 remote/data/ocr_output
 remote/data/train_data
+remote/data/sbc_train_dataset/old
 remote/data/remote_train_dataset/old
+remote/scripts/run_app_on_docker.sh
 
 
 # sbc
