@@ -122,8 +122,11 @@ def execute_workload(workload_number):
     # print("Remote-always: ", remote_time)
     # print("Using implemented algorithm: ", de_time)
 
+
+
 if __name__ == "__main__":
-    # start_daemons()
+    # start_daemon()
+    # open_ssh()
     # start_docker()
 
     for workload_number in range(1,3):
@@ -139,4 +142,5 @@ if __name__ == "__main__":
         file_writer.writerow(total_time)
 
     # stop_docker()
+    # close_ssh()
     # generate_test_summary()
