@@ -1,15 +1,19 @@
-remote/data
+# docker
+docker/scripts/quick_test_1.sh
+docker/scripts/quick_test_2.sh
 
 
-train/data/ocr_output
-train/data/train_data_1
-train/data/train_data
-train/data/remote_train_dataset/old
+# remote
+remote/data/archive
+remote/data/ocr_output
+remote/data/train_data
+remote/data/remote_train_dataset/old
 
 
+# sbc
+sbc/data/archive
+sbc/data/ocr_output
 sbc/data/train_data
-sbc/data/cpu_bw_mon.csv
-sbc/data/max_bw_mon.csv
 sbc/data/workloads/Old
 sbc/data/workloads/workload_1
 sbc/data/workloads/workload_2
