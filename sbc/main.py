@@ -78,7 +78,7 @@ def execute_workload(workload_number):
     for filename in FILE_NAMES:
         tesseract_command = 'tesseract ' + PATH_WORKLOAD + filename + ' ' + PATH_OCR_OUTPUT + filename
         st_task = time.time()
-        # os.system(tesseract_command)
+        os.system(tesseract_command)
         # print(workload_number, filename)
         ed_task = time.time()
 
@@ -126,7 +126,7 @@ if __name__ == "__main__":
     # start_daemons()
     # start_docker()
 
-    for workload_number in range(1,4):
+    for workload_number in range(1,3):
         get_filenames(workload_number)
         execute_workload(workload_number)
 
@@ -135,7 +135,7 @@ if __name__ == "__main__":
         file_writer = csv.writer(csv_file)
         file_writer.writerow(wl_sbc_all[0])
         file_writer.writerow(wl_sbc_all[1])
-        file_writer.writerow(wl_sbc_all[2])
+        #file_writer.writerow(wl_sbc_all[2])
         file_writer.writerow(total_time)
 
     # stop_docker()
