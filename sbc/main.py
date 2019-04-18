@@ -71,13 +71,15 @@ def get_filenames(workload_number):
 
 def start_docker():
     # start docker script on remote server
-    start_command = '"docker run -i --cpus="4.0" --name tesseract-cn tesseract"'
+    # start_command = '"docker run -i --cpus="4.0" --name tesseract-cn tesseract"'
+    start_command = REMOTE_PATH + 'scripts/docker_start.sh'
     ssh_cmd = 'ssh -F "'+ PATH_SSH_CONFIG +'" ' + REMOTE_USER_NAME + '@' + REMOTE_SERVER_ADDRESS + ' -T ' + start_command
     os.system(ssh_cmd)
 
 def stop_docker():
     # stop docker script on remote server
-    stop_command = '"docker stop tesseract-cn; docker rm tesseract-cn"'
+    # stop_command = '"docker stop tesseract-cn; docker rm tesseract-cn"'
+    stop_command = REMOTE_PATH + 'scripts/docker_stop.sh'
     ssh_cmd = 'ssh -F "'+ PATH_SSH_CONFIG +'" ' + REMOTE_USER_NAME + '@' + REMOTE_SERVER_ADDRESS + ' -T ' + stop_command
     os.system(ssh_cmd)
 
