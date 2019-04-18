@@ -1,18 +1,18 @@
 #!/bin/sh
 
-PWD=$(pwd)'/remote'
-FILE_NAME=$1
-FILE_PATH=$PWD'/data/train_data/'$FILE_NAME
-# echo $FILE_PATH
-OUTPUT_DIR=$PWD'/data/ocr_output/'
+# includes name as well
+INPUT_DIR_NAME=$1
+INPUT_NAME=$2
+
+# output directory from arguments
+OUTPUT_DIR=$3
+OUTPUT_NAME=$4
+
+# temporary directory
 TMP=TMP_$$_$(date +"%N")
 
-
-# docker run -dt --cpus="4.0" --name tesseract-cn tesseract
 docker exec -it tesseract-cn mkdir -p ./$TMP/
-docker cp $FILE_PATH tesseract-cn:/home/app/$TMP/
-docker exec -it tesseract-cn /bin/ash -c "cd ./$TMP/; tesseract $FILE_NAME $TMP"
-docker cp tesseract-cn:/home/app/$TMP/$TMP.txt $OUTPUT_DIR
+docker cp $INPUT_DIR_NAME tesseract-cn:/home/app/$TMP/
+docker exec -it tesseract-cn /bin/ash -c "cd ./$TMP/; tesseract $INPUT_NAME $OUTPUT_NAME"
+docker cp tesseract-cn:/home/app/$TMP/$OUTPUT_NAME.txt $OUTPUT_DIR
 docker exec -it tesseract-cn rm \-r ./$TMP/
-# docker stop tesseract-cn
-# docker rm tesseract-cn

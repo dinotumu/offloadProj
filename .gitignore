@@ -6,7 +6,8 @@ docker/scripts/quick_test_2.sh
 
 # remote
 remote/data/archive
-remote/data/ocr_output
+remote/data/input
+remote/data/output
 remote/data/train_data
 remote/data/sbc_train_dataset/old
 remote/data/remote_train_dataset/old
@@ -15,7 +16,8 @@ remote/scripts/run_app_on_docker.sh
 
 # sbc
 sbc/data/archive
-sbc/data/ocr_output
+sbc/data/input
+sbc/data/output
 sbc/data/train_data
 sbc/data/workloads/Old
 sbc/data/workloads/workload_1

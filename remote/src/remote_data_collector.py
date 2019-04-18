@@ -11,19 +11,25 @@ from os.path import isfile, join
 
 # define variables
 # Path to the files required by the program: Here, PWD is offloadProj
-PWD = os.getcwd() + '/train'
-PATH_OCR_OUTPUT = PWD + '/data/ocr_output/'
+PWD = os.getcwd() + '/remote'
+PATH_OUTPUT = PWD + '/data/output/'
 PATH_IMAGE_FILE = PWD + '/data/train_data/'
 PATH_DATASET_FILE = PWD + '/data/remote_train_dataset/'
 
+
+now = datetime.datetime.now()
+DATE_TIME = str(now.day) + '.' + str(now.month) + '.' + str(now.year) + '_' + str(now.hour) + '.' + str(now.minute) + '.' + str(now.second)
+output_folder_name = PATH_OUTPUT + DATE_TIME + '_train'
+mkdir_folder = 'mkdir ' + output_folder_name
+os.system(mkdir_folder)
+
+
 # list of all the names of the input image files for the application
 FILE_NAMES = [filename for filename in listdir(PATH_IMAGE_FILE) if isfile(join(PATH_IMAGE_FILE, filename))]
+FILE_NAMES = FILE_NAMES[0:3]
 
 def create_csv_file():
-    now = datetime.datetime.now()
     # for a custom filename to a csv file: "date_time.csv"
-    DATE_TIME = str(now.day) + '.' + str(now.month) + '.' + str(now.year) + '_' + str(now.hour) + '.' + str(now.minute) + '.' + str(now.second)
-    
     # edit global variable "PATH_DATASET_FILE"
     global PATH_DATASET_FILE
     PATH_DATASET_FILE = PATH_DATASET_FILE + DATE_TIME + '.csv'
@@ -38,11 +44,18 @@ def execute_input(filename):
     start = time.time()
 
     # command to run the bash script which contains docker instructions
-    bash_command = 'sh ' + PWD + '/scripts/run.sh' + ' ' + filename
-    # print(bash_command)
+
+    docker_command_arg_0 = PWD + '/scripts/docker_run.sh'
+    docker_command_arg_1 = PATH_IMAGE_FILE + filename
+    docker_command_arg_2 = filename
+    docker_command_arg_3 = output_folder_name
+    docker_command_arg_4 = 'ocr_output_' + filename
+
+    docker_command = 'sh ' + docker_command_arg_0 + ' ' + docker_command_arg_1 + ' ' + docker_command_arg_2 + ' ' + docker_command_arg_3 + ' ' + docker_command_arg_4
+    # print(docker_command)
     
     # execute bash command using os.system
-    os.system(bash_command)
+    os.system(docker_command)
 
     end = time.time()
     exec_time = end - start
@@ -53,7 +66,7 @@ def execute_input(filename):
 def data_collector():
 
     # start docker container    
-    start_command = 'sh ' + PWD + '/scripts/start.sh'
+    start_command = 'sh ' + PWD + '/scripts/docker_start.sh'
     os.system(start_command)
 
     # For each file name in the list, run the tesseract docker container 
@@ -81,7 +94,7 @@ def data_collector():
 
 
     # stop docker container    
-    stop_command = 'sh ' + PWD + '/scripts/stop.sh'
+    stop_command = 'sh ' + PWD + '/scripts/docker_stop.sh'
     os.system(stop_command)
 
 # End of function data_collector()
