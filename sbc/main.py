@@ -16,6 +16,9 @@ PATH_SBC_OUTPUT = SBC_PWD + '/data/output/'
 PATH_TO_CPUBWMON_FILE = SBC_PWD + '/data/cpu_bw_mon_now.csv'
 PATH_TO_MAXBWMON_FILE = SBC_PWD + '/data/max_bw_mon_now.csv'
 
+SBC_PREDICT = SBC_PWD + '/data/sbc_model.csv'
+REMOTE_PREDICT = SBC_PWD + '/data/remote_model.csv'
+
 
 # remote variables for ssh
 REMOTE_SERVER_ADDRESS = '192.168.0.80'
@@ -35,13 +38,8 @@ PATH_SSH_SOCKET = TMP_SSH_DIR + '/ssh_socket'
 # print(TMP_SSH_DIR, PATH_SSH_CONFIG, PATH_SSH_SOCKET)
 
 
-
-
-
-
-
-wl_sbc_all = []
-total_time = []
+# wl_sbc_all = []
+# total_time = []
 
 
 ##################################################################################################################
@@ -122,10 +120,10 @@ def execute_workload(workload_number):
     DATE_TIME = str(now.day) + '.' + str(now.month) + '.' + str(now.year) + '_' + str(now.hour) + '.' + str(now.minute) + '.' + str(now.second)
 
     # make output directories for 'SBC-Only case'
-    # sbc_output_folder_name = DATE_TIME + '_' + 'workload_' + str(workload_number)
-    # mkdir_sbc = 'mkdir ' + PATH_SBC_OUTPUT + sbc_output_folder_name
-    # print(mkdir_sbc)
-    # os.system(mkdir_sbc)
+    sbc_output_folder_name = DATE_TIME + '_' + 'workload_' + str(workload_number)
+    mkdir_sbc = 'mkdir ' + PATH_SBC_OUTPUT + sbc_output_folder_name
+    print(mkdir_sbc)
+    os.system(mkdir_sbc)
     
     # make input and output directories for 'Remote-Always case'
     remote_folder_name = DATE_TIME + '_remote_' + 'workload_' + str(workload_number)
@@ -136,37 +134,37 @@ def execute_workload(workload_number):
     os.system(ssh_mkdir_remote)
 
     # make input and output directories for 'Implemented-Algorithm case'
-    # algo_folder_name = DATE_TIME + '_algo_' + 'workload_' + str(workload_number)
-    # mkdir_input_algo = 'mkdir ' + REMOTE_INPUT_FILE_PATH + algo_folder_name
-    # mkdir_output_algo = 'mkdir ' + REMOTE_OUTPUT_FILE_PATH + algo_folder_name
-    # ssh_mkdir_algo = 'ssh -F "'+ PATH_SSH_CONFIG +'" ' + REMOTE_USER_NAME + '@' + REMOTE_SERVER_ADDRESS + ' -T ' + '"' + mkdir_input_algo + ';' + mkdir_output_algo + '"'
+    algo_folder_name = DATE_TIME + '_algo_' + 'workload_' + str(workload_number)
+    mkdir_input_algo = 'mkdir ' + REMOTE_INPUT_FILE_PATH + algo_folder_name
+    mkdir_output_algo = 'mkdir ' + REMOTE_OUTPUT_FILE_PATH + algo_folder_name
+    ssh_mkdir_algo = 'ssh -F "'+ PATH_SSH_CONFIG +'" ' + REMOTE_USER_NAME + '@' + REMOTE_SERVER_ADDRESS + ' -T ' + '"' + mkdir_input_algo + ';' + mkdir_output_algo + '"'
     # print(ssh_mkdir_algo)
-    # os.system(ssh_mkdir_algo)
+    os.system(ssh_mkdir_algo)
 
 
 
-    wl_sbc = []
-    wl_remote = []
-    wl_algo = []
+    # wl_sbc = []
+    # wl_remote = []
+    # wl_algo = []
 
 
     # 
     # run sbc-only: start
     # 
-    # sbc_start = time.time()
+    sbc_start = time.time()
 
-    # for filename in FILE_NAMES:
-    #     tesseract_command = 'tesseract ' + PATH_WORKLOAD + filename + ' ' + PATH_OCR_OUTPUT + filename
-    #     st_task = time.time()
-    #     os.system(tesseract_command)
-    #     # print(workload_number, filename)
-    #     ed_task = time.time()
+    for filename in FILE_NAMES:
+        tesseract_command = 'tesseract ' + PATH_WORKLOAD + filename + ' ' + PATH_SBC_OUTPUT + filename
+        # st_task = time.time()
+        os.system(tesseract_command)
+        # print(workload_number, filename)
+        # ed_task = time.time()
 
-    #     wl_sbc.append(ed_task - st_task)
-    #     # wl.append(filename)
+        # wl_sbc.append(ed_task - st_task)
+        # wl.append(filename)
 
-    # sbc_end = time.time()
-    # sbc_time = sbc_end - sbc_start
+    sbc_end = time.time()
+    sbc_time = sbc_end - sbc_start
     # wl_sbc_all.append(wl_sbc)
     # total_time.append(sbc_time)	
     # 
@@ -223,44 +221,82 @@ def execute_workload(workload_number):
     # 
     # run algo: start
     # 
+    de_start = time.time()
+    for filename in FILE_NAMES:
+        # get input_size
+        input_size = os.path.getsize(PATH_WL_FOLDER + filename)
 
-    # de_start = time.time()
+        # t_sbc
+        with open(SBC_PREDICT) as sbc:
+            coeff1, coeff2, coeff3 = sbc.readline().split()
+
+        with open(PATH_TO_CPUBWMON_FILE) as cpu_mon:
+            average_cpu_workload = cpu_mon.readline().split()[2]
+            up_bw_util = cpu_mon.readline().split()[6]
+        t_sbc = coeff1 * average_cpu_workload + coeff2 * input_size + coeff3
+
+        # t_remote
+        with open(REMOTE_PREDICT) as remote:
+            r_coeff1, r_coeff2 = remote.readline().split()
+
+        t_remote = r_coeff1 * input_size + r_coeff2
+
+        # t_upload
+        with open(PATH_TO_MAXBWMON_FILE) as bw_mon:
+            up_max_bw = bw_mon.readline().split()[2]
+
+        t_upload = input_size/(up_max_bw - up_bw_util)
+
+        if (t_sbc > t_remote + t_upload):
+            tesseract_command = 'tesseract ' + PATH_WORKLOAD + filename + ' ' + PATH_SBC_OUTPUT + filename
+            os.system(tesseract_command)
+        else:
+            SOURCE_PATH = '"' + PATH_WL_FOLDER + '/' + filename + '"'
+            DESTINATION_PATH = REMOTE_USER_NAME + '@' + REMOTE_SERVER_ADDRESS + ':"' + REMOTE_INPUT_FILE_PATH + remote_folder_name + '"'
+
+            # scp command to upload the input file in the remote server
+            scp_cmd = 'scp -F "' + PATH_SSH_CONFIG + '" ' + SOURCE_PATH + ' ' + DESTINATION_PATH
+            # print(scp_cmd)
+            os.system(scp_cmd)
 
 
-    # de_end = time.time()
-    # de_time = de_end - de_start
+            # arguments for the script file
+            remote_docker_command_arg_0 = REMOTE_PATH + 'scripts/docker_run.sh'
+            remote_docker_command_arg_1 = REMOTE_INPUT_FILE_PATH + algo_folder_name + '/' + filename
+            remote_docker_command_arg_2 = filename
+            remote_docker_command_arg_3 = REMOTE_OUTPUT_FILE_PATH + algo_folder_name + '/' 
+            remote_docker_command_arg_4 = 'ocr_output_' + filename
 
+            # docker run command with arguments
+            remote_docker_command = '"sh ' + remote_docker_command_arg_0 + ' ' + remote_docker_command_arg_1 + ' '  + remote_docker_command_arg_2 + ' ' + remote_docker_command_arg_3 + ' ' + remote_docker_command_arg_4 + '"'
+            
+            # ssh command to run 'remote_docker_command' in the remote server
+            ssh_cmd = 'ssh -F "'+ PATH_SSH_CONFIG +'" ' + REMOTE_USER_NAME + '@' + REMOTE_SERVER_ADDRESS + ' -T ' + remote_docker_command
+            # print(ssh_cmd)
+            os.system(ssh_cmd)
+
+
+    de_end = time.time()
+    de_time = de_end - de_start
     # 
     # run algo: end
     # 
 
-
-
-
-
     # print observations
-    # print("SBC-only: ", sbc_time)
+    print("SBC-only: ", sbc_time)
     print("Remote-always: ", remote_time)
-    # print("Using implemented algorithm: ", de_time)
-
-
-
+    print("Using implemented algorithm: ", de_time)
 
 if __name__ == "__main__":
     # start background processes
-    # start_daemon()
-
-
+    start_daemon()
     open_ssh_tunnel()
     start_docker()
-
 
     # execute workloads
     for workload_number in range(1,2):
         get_filenames(workload_number)
         execute_workload(workload_number)
-
-
 
     # stop background processes
     stop_docker()

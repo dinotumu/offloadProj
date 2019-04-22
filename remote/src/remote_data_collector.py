@@ -26,7 +26,7 @@ os.system(mkdir_folder)
 
 # list of all the names of the input image files for the application
 FILE_NAMES = [filename for filename in listdir(PATH_IMAGE_FILE) if isfile(join(PATH_IMAGE_FILE, filename))]
-FILE_NAMES = FILE_NAMES[0:3]
+# FILE_NAMES = FILE_NAMES[0:3]
 
 def create_csv_file():
     # for a custom filename to a csv file: "date_time.csv"
@@ -52,7 +52,7 @@ def execute_input(filename):
     docker_command_arg_4 = 'ocr_output_' + filename
 
     docker_command = 'sh ' + docker_command_arg_0 + ' ' + docker_command_arg_1 + ' ' + docker_command_arg_2 + ' ' + docker_command_arg_3 + ' ' + docker_command_arg_4
-    # print(docker_command)
+    print(docker_command)
     
     # execute bash command using os.system
     os.system(docker_command)

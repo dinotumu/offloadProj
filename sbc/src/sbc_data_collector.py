@@ -88,7 +88,7 @@ def data_collector():
 
             # Fetch average cpu utilization from the cpu_bw_mon_now.csv file
             with open(PATH_TO_CPUBWMON_FILE) as cpu_mon:
-                average_cpu_workload = cpu_mon.readline().split()[1]
+                average_cpu_workload = cpu_mon.readline().split()[2]
 
             # finally, write (input_size, average_cpu_workload, execution_time) to the csv file
             row = [file_name, input_size, execution_time, average_cpu_workload]
@@ -100,16 +100,6 @@ def data_collector():
         print('Process Terminated')
 
     # End of 'for loop' for 'stressng_values'
-
-
-
-
-    # count lines in the csv file
-    # with open(PATH_TO_CSV_FILE) as csv_file:
-    #     num_of_lines = sum(1 for line in csv_file)
-
-    # print('Written (input_size, average_cpu_workload, execution_time) for ' + str(num_of_lines-1) + ' image files in csv file')
-
 
 # End of function data_collector()
 
