@@ -193,7 +193,7 @@ def execute_workload(workload_number):
 
 
         # arguments for the script file
-        remote_docker_command_arg_0 = REMOTE_PATH + 'scripts/docker_run.sh'
+        remote_docker_command_arg_0 = REMOTE_PATH + 'scripts/docker_runn.sh'
         remote_docker_command_arg_1 = REMOTE_INPUT_FILE_PATH + remote_folder_name + '/' + filename
         remote_docker_command_arg_2 = filename
         remote_docker_command_arg_3 = REMOTE_OUTPUT_FILE_PATH + remote_folder_name + '/' 
@@ -291,16 +291,16 @@ if __name__ == "__main__":
     # start background processes
     # start_daemon()
     open_ssh_tunnel()
-    # start_docker()
+    start_docker()
 
     # execute workloads
     # for workload_number in range(1,2):
-    workload_number = 1
-    get_filenames(workload_number)
-    execute_workload(workload_number)
+    # workload_number = 1
+    # get_filenames(workload_number)
+    # execute_workload(workload_number)
 
     # stop background processes
-    # stop_docker()
+    stop_docker()
     close_ssh_tunnel()
 
 
