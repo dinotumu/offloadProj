@@ -151,20 +151,20 @@ def execute_workload(workload_number):
     # 
     # run sbc-only: start
     # 
-    # sbc_start = time.time()
+    sbc_start = time.time()
 
-    # for filename in FILE_NAMES:
-    #     tesseract_command = 'tesseract ' + PATH_WORKLOAD + filename + ' ' + PATH_SBC_OUTPUT + filename
-    #     # st_task = time.time()
-    #     os.system(tesseract_command)
-    #     # print(workload_number, filename)
-    #     # ed_task = time.time()
+    for filename in FILE_NAMES:
+        tesseract_command = 'tesseract ' + PATH_WORKLOAD + filename + ' ' + PATH_SBC_OUTPUT + filename
+        # st_task = time.time()
+        os.system(tesseract_command)
+        # print(workload_number, filename)
+        # ed_task = time.time()
 
-    #     # wl_sbc.append(ed_task - st_task)
-    #     # wl.append(filename)
+        # wl_sbc.append(ed_task - st_task)
+        # wl.append(filename)
 
-    # sbc_end = time.time()
-    # sbc_time = sbc_end - sbc_start
+    sbc_end = time.time()
+    sbc_time = sbc_end - sbc_start
     # wl_sbc_all.append(wl_sbc)
     # total_time.append(sbc_time)	
     # 
@@ -283,7 +283,7 @@ def execute_workload(workload_number):
     # 
 
     # print observations
-    # print("SBC-only: ", sbc_time)
+    print("SBC-only: ", sbc_time)
     print("Remote-always: ", remote_time)
     # print("Using implemented algorithm: ", de_time)
 
