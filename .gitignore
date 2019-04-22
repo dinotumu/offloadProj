@@ -21,6 +21,6 @@ sbc/data/input
 sbc/data/output
 sbc/data/train_data
 sbc/data/workloads/Old
-sbc/data/workloads/workload_1
-sbc/data/workloads/workload_2
-sbc/data/workloads/workload_3
+# sbc/data/workloads/workload_1
+# sbc/data/workloads/workload_2
+# sbc/data/workloads/workload_3
