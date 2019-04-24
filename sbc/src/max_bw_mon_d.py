@@ -9,7 +9,6 @@ import os
 # Path to the files required by the program: Under the asssumption that PWD is offloadProj
 PWD = os.getcwd()
 PWD = PWD + '/sbc'
-# PATH_TO_MAXBWMON_CSV_FILE = PWD + '/data/max_bw_mon.csv'
 PATH_TO_MAXBWMON_FILE = PWD + '/data/max_bw_mon_now.csv'
 
 while True:
@@ -41,7 +40,7 @@ while True:
         file_writer = csv.writer(maxbwmon)
         file_writer.writerow(row)
     
-    print("cpu_bw_mon updated")
+    print("max_bw_mon updated")
 
     end = time.time()
     # exec_time = end - start

@@ -45,7 +45,7 @@ def execute_input(filename):
 
     # command to run the bash script which contains docker instructions
 
-    docker_command_arg_0 = PWD + '/scripts/docker_runn.sh'
+    docker_command_arg_0 = PWD + '/scripts/docker_run.sh'
     docker_command_arg_1 = PATH_IMAGE_FILE + filename
     docker_command_arg_2 = filename
     docker_command_arg_3 = output_folder_name
