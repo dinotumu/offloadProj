@@ -14,7 +14,7 @@ from os.path import isfile, join
 tmp_util_data = list()
 
 # stress-ng variables
-STRESSNG_VALUES = [i for i in numpy.arange(0,90,5)]
+STRESSNG_VALUES = [i for i in numpy.arange(0,20,5)]
 STRESSNG_CMD = "stress-ng -c 0 -l "
 
 # Path to the files required by the program: Under the asssumption that PWD is offloadProj
