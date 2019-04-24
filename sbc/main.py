@@ -21,7 +21,7 @@ REMOTE_PREDICT = SBC_PWD + '/data/remote_model.csv'
 
 
 # remote variables for ssh
-REMOTE_SERVER_ADDRESS = '192.168.0.80'
+REMOTE_SERVER_ADDRESS = '192.168.43.234'
 REMOTE_USER_NAME = 'dinotumu'
 REMOTE_PATH = '/home/' + REMOTE_USER_NAME + '/Documents/offloadProj/remote/'
 REMOTE_INPUT_FILE_PATH = REMOTE_PATH + 'data/input/'
