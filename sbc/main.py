@@ -69,16 +69,19 @@ def get_filenames(workload_number):
 
 def start_docker():
     # start docker script on remote server
-    start_command = '"docker run -dt --cpus="4.0" --name tesseract-cn tesseract"'
-    # start_command = REMOTE_PATH + 'scripts/docker_start.sh'
+    # start_command = '"docker run -dt --cpus="4.0" --name tesseract-cn tesseract"'
+    start_command = REMOTE_PATH + 'scripts/docker_start.sh'
     ssh_cmd = 'ssh -F "'+ PATH_SSH_CONFIG +'" ' + REMOTE_USER_NAME + '@' + REMOTE_SERVER_ADDRESS + ' -T ' + start_command
     os.system(ssh_cmd)
 
 def stop_docker():
     # Try running a command on container
-    try_command = 'docker exec -t tesseract-cn "touch /home/app/dino.txt; ls -al /home/app/"'
+    try_command = 'docker exec -t tesseract-cn "touch /home/app/dino.txt"'
     try_cmd = 'ssh -F "'+ PATH_SSH_CONFIG +'" ' + REMOTE_USER_NAME + '@' + REMOTE_SERVER_ADDRESS + ' -T ' + try_command
-    os.system(try_cmd)
+    try2_command = 'docker exec -t tesseract-cn "ls /home/app"'
+    try2_cmd = 'ssh -F "'+ PATH_SSH_CONFIG +'" ' + REMOTE_USER_NAME + '@' + REMOTE_SERVER_ADDRESS + ' -T ' + try2_command
+    # os.system(try_cmd)
+    os.system(try2_cmd)
 
     # stop docker script on remote server
     stop_command = '"docker stop tesseract-cn; docker rm tesseract-cn"'
@@ -300,9 +303,9 @@ if __name__ == "__main__":
 
     # execute workloads
     # for workload_number in range(1,2):
-    # workload_number = 1
-    # get_filenames(workload_number)
-    # execute_workload(workload_number)
+    workload_number = 1
+    get_filenames(workload_number)
+    execute_workload(workload_number)
 
     # stop background processes
     stop_docker()
