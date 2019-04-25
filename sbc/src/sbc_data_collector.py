@@ -24,6 +24,7 @@ PATH_TO_CPUBWMON_FILE = SBC_PWD + '/data/cpu_bw_mon_now.csv'
 
 # list of all the names of the input image files for the application
 FILE_NAMES = [filename for filename in listdir(PATH_TO_FILE_DIR) if isfile(join(PATH_TO_FILE_DIR, filename))]
+FILE_NAMES.sort()
 # print(FILE_NAMES)
 
 def create_csv_file():
@@ -64,7 +65,7 @@ def execute_input(filename):
 def data_collector():
     for stressng_value in STRESSNG_VALUES:
         stressng_command = STRESSNG_CMD + str(stressng_value)
-        # print(stressng_command)
+        print(stressng_command)
         
         # execute stress_ng command using subprocess: "$ stress-ng -c 0 -l 40" for 40% cpu stress
         stressng_process = subprocess.Popen(stressng_command, shell=True)
