@@ -254,7 +254,7 @@ def execute_workload(workload_number):
             # scp command to upload the input file in the remote server
             scp_cmd = 'scp -F "' + PATH_SSH_CONFIG + '" ' + SOURCE_PATH + ' ' + DESTINATION_PATH
             # print(scp_cmd)
-            # os.system(scp_cmd)
+            os.system(scp_cmd)
 
 
             # arguments for the script file
@@ -270,7 +270,7 @@ def execute_workload(workload_number):
             # ssh command to run 'remote_docker_command' in the remote server
             ssh_cmd = 'ssh -F "'+ PATH_SSH_CONFIG +'" ' + REMOTE_USER_NAME + '@' + REMOTE_SERVER_ADDRESS + ' -T ' + remote_docker_command
             # print(ssh_cmd)
-            # os.system(ssh_cmd)
+            os.system(ssh_cmd)
 
 
     de_end = time.time()

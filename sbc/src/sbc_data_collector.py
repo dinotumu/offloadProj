@@ -4,33 +4,26 @@
 import os
 import csv
 import time
-import numpy
 import datetime
 import subprocess
 from os import listdir
 from os.path import isfile, join
 
-# define variables
-tmp_util_data = list()
-
 # stress-ng variables
-STRESSNG_VALUES = [i for i in numpy.arange(0,20,5)]
+STRESSNG_VALUES = [i for i in range(0,20,5)]
+# print(STRESSNG_VALUES)
 STRESSNG_CMD = "stress-ng -c 0 -l "
 
 # Path to the files required by the program: Under the asssumption that PWD is offloadProj
 PWD = os.getcwd()
-PWD = PWD + '/sbc'
-PATH_TO_FILE = PWD + '/data/train_data'
-PATH_OCR_OUTPUT = PWD + '/data/output/'
-PATH_TO_FILE_DIR = PWD + '/data/input/'
-PATH_TO_CSV_FILE = PWD + '/data/csv_local_exec_time/'
-PATH_TO_CPUBWMON_FILE = PWD + '/data/cpu_bw_mon_now.csv'
-
+SBC_PWD = PWD + '/sbc'
+PATH_TO_FILE_DIR = SBC_PWD + '/data/train_data/'
+PATH_SBC_OUTPUT = SBC_PWD + '/data/output/'
+PATH_TO_CPUBWMON_FILE = SBC_PWD + '/data/cpu_bw_mon_now.csv'
 
 
 # list of all the names of the input image files for the application
 FILE_NAMES = [filename for filename in listdir(PATH_TO_FILE_DIR) if isfile(join(PATH_TO_FILE_DIR, filename))]
-# FILE_NAMES = ['001.png', '002.png']
 # print(FILE_NAMES)
 
 def create_csv_file():
@@ -40,7 +33,7 @@ def create_csv_file():
     
     # edit global variable "PATH_TO_CSV_FILE"
     global PATH_TO_CSV_FILE
-    PATH_TO_CSV_FILE = PATH_TO_CSV_FILE + DATE_TIME + '.csv'
+    PATH_TO_CSV_FILE = PATH_TO_CPUBWMON_FILE + DATE_TIME + '.csv'
     with open(PATH_TO_CSV_FILE, 'w') as csv_file:
         file_writer = csv.writer(csv_file, delimiter=',', quotechar='|', quoting=csv.QUOTE_MINIMAL)
         file_writer.writerow(['File Name', 'File Size', 'Average CPU Workload', 'Execution Time'])
@@ -52,12 +45,13 @@ def append_csv_file(row):
         file_writer.writerow(row)
 # End of function append_csv_file()
 
-def execute_input(file_name):
+def execute_input(filename):
     # initiate the start time to calculate the execution time of the desired application 
     start = time.time()
     
     # run the tesseract-ocr application with the input (from parameter)
-    bash_command = 'tesseract ' + PATH_TO_FILE_DIR + file_name + ' ' + PATH_OCR_OUTPUT + file_name
+
+    bash_command = 'tesseract ' + PATH_TO_FILE_DIR + filename + ' ' + PATH_SBC_OUTPUT + filename
     os.system(bash_command)
 
     # end time of the application
@@ -70,7 +64,7 @@ def execute_input(file_name):
 def data_collector():
     for stressng_value in STRESSNG_VALUES:
         stressng_command = STRESSNG_CMD + str(stressng_value)
-        print(stressng_command)
+        # print(stressng_command)
         
         # execute stress_ng command using subprocess: "$ stress-ng -c 0 -l 40" for 40% cpu stress
         stressng_process = subprocess.Popen(stressng_command, shell=True)
@@ -81,14 +75,15 @@ def data_collector():
         # for each stress-ng, execute all inputs
         for file_name in FILE_NAMES:
             # get input_size
-            input_size = os.path.getsize(PATH_TO_FILE + file_name)
+            input_size = os.path.getsize(PATH_TO_FILE_DIR + file_name)
 
             # invoke execute_input(file_name); get (execution_time, average_cpu_workload) as return value
             execution_time = execute_input(file_name)
 
             # Fetch average cpu utilization from the cpu_bw_mon_now.csv file
             with open(PATH_TO_CPUBWMON_FILE) as cpu_mon:
-                average_cpu_workload = cpu_mon.readline().split()[2]
+                average_cpu_workload = float(cpu_mon.readline()[:-1].split(',')[2])
+                
 
             # finally, write (input_size, average_cpu_workload, execution_time) to the csv file
             row = [file_name, input_size, execution_time, average_cpu_workload]
