@@ -19,7 +19,7 @@ remote/scripts/run_app_on_docker.sh
 sbc/data/archive
 sbc/data/input
 sbc/data/output
-sbc/data/train_data
+# sbc/data/train_data
 sbc/data/workloads/Old
 # sbc/data/workloads/workload_1
 # sbc/data/workloads/workload_2
