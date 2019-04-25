@@ -10,7 +10,7 @@ from os import listdir
 from os.path import isfile, join
 
 # stress-ng variables
-STRESSNG_VALUES = [i for i in range(5,10,5)]
+STRESSNG_VALUES = [i for i in range(0,50,5)]
 # print(STRESSNG_VALUES)
 STRESSNG_CMD = "stress-ng -c 0 -l "
 
