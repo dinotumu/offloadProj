@@ -15,7 +15,7 @@ REMOTE_PREDICT = PWD + '/sbc' + '/data/remote_model.csv'
 data_set = pd.read_csv(r'/home/dinotumu/Documents/offloadProj/remote/data/remote_train_dataset/10.4.2019_7.45.8.csv')
 df = pd.DataFrame(data_set,columns=['file_name', 'time_stamp', 'input_size', 'execution_time'])
 
-# print (df)
+print (df)
 # print(data_set.shape)
 # print(data_set.describe())
 

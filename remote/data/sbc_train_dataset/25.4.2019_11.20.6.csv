@@ -1,4 +1,4 @@
-File Name,File Size,Average CPU Workload,Execution Time
+file_name,input_size,average_cpu_util,execution_time
 03.png,2677,9.390969656422897,0.5068292617797852
 04.png,2988,9.390969656422897,0.618628740310669
 05.png,3870,15.730138724258229,0.9936618804931641

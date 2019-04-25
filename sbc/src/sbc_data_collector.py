@@ -50,16 +50,16 @@ def append_csv_file(row):
 def data_collector():
     for stressng_value in STRESSNG_VALUES:
         stressng_command = STRESSNG_CMD + str(stressng_value)
-        print(stressng_command)
+        # print(stressng_command)
         
         # execute stress_ng command using subprocess: "$ stress-ng -c 0 -l 40" for 40% cpu stress
-        stressng_process = subprocess.Popen(stressng_command, shell=True)
+        # stressng_process = subprocess.Popen(stressng_command, shell=True)
         
         # wait time to make the cpu percenatge stable
         time.sleep(10)
 
         # for each stress-ng, execute all inputs
-        for file_name in FILE_NAMES:
+        for file_name in [1]:
             # get input_size
             input_size = os.path.getsize(PATH_TO_FILE_DIR + file_name)
 
@@ -84,7 +84,7 @@ def data_collector():
         # End of 'for loop' for 'execute_input'
 
         # Terminate the stress-ng process after running for all the inputs for a particular (stressng_value) 
-        stressng_process.terminate()
+        # stressng_process.terminate()
         time.sleep(10)
         print('Process Terminated')
 

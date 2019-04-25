@@ -1,13 +1,19 @@
 #!/usr/bin/python3
 
 # imports
+import os
+import numpy as np
 from sklearn import linear_model
 import statsmodels.api as sm
 import pandas as pd
 import matplotlib.pyplot as plt
+from sklearn.model_selection import train_test_split
 
-data_set = pd.read_csv(r'/home/dinotumu/Documents/offloadProj/trainmodel_cloud_offloadProj/data/csv_local_exec_time/0.57.38_4.4.2019.csv')
-df = pd.DataFrame(data_set,columns=['file_name', 'time_stamp', 'input_size', 'execution_time', 'average_cpu_util'])
+PWD = os.getcwd()
+REMOTE_PREDICT = PWD + '/sbc' + '/data/remote_model.csv'
+
+data_set = pd.read_csv(r'/home/dinotumu/Documents/offloadProj/remote/data/sbc_train_dataset/25.4.2019_11.20.6.csv')
+df = pd.DataFrame(data_set,columns=['file_name', 'input_size', 'average_cpu_util', 'execution_time'])
 
 # print (df)
 
@@ -32,8 +38,8 @@ df = pd.DataFrame(data_set,columns=['file_name', 'time_stamp', 'input_size', 'ex
 # plt.show()
 
 
-X = df[['input_size', 'average_cpu_util']].values.reshape(-1,1) 
-Y = df['execution_time'].values.reshape(-1,1)
+X = df[['input_size', 'average_cpu_util']].values
+Y = df['execution_time'].values
  
 # Using scikit learn for linear regression
 regression_model = linear_model.LinearRegression()
@@ -44,5 +50,5 @@ print('Coefficients: \n', regression_model.coef_)
 
 
 # prediction for new input values using the model
-input_ = [[1233, 89]]
+input_ = [[2633, 0.98]]
 print ('Predicted Execution time: \n', regression_model.predict(input_) )
