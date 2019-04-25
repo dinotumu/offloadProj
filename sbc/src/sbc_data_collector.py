@@ -10,7 +10,7 @@ from os import listdir
 from os.path import isfile, join
 
 # stress-ng variables
-STRESSNG_VALUES = [i for i in range(0,20,5)]
+STRESSNG_VALUES = [i for i in range(5,10,5)]
 # print(STRESSNG_VALUES)
 STRESSNG_CMD = "stress-ng -c 0 -l "
 
@@ -20,7 +20,7 @@ SBC_PWD = PWD + '/sbc'
 PATH_TO_FILE_DIR = SBC_PWD + '/data/train_data/'
 PATH_SBC_OUTPUT = SBC_PWD + '/data/output/'
 PATH_TO_CPUBWMON_FILE = SBC_PWD + '/data/cpu_bw_mon_now.csv'
-
+PATH_TO_CSV_FILE = SBC_PWD + '/data'
 
 # list of all the names of the input image files for the application
 FILE_NAMES = [filename for filename in listdir(PATH_TO_FILE_DIR) if isfile(join(PATH_TO_FILE_DIR, filename))]
@@ -46,21 +46,6 @@ def append_csv_file(row):
         file_writer.writerow(row)
 # End of function append_csv_file()
 
-def execute_input(filename):
-    # initiate the start time to calculate the execution time of the desired application 
-    start = time.time()
-    
-    # run the tesseract-ocr application with the input (from parameter)
-
-    bash_command = 'tesseract ' + PATH_TO_FILE_DIR + filename + ' ' + PATH_SBC_OUTPUT + filename
-    os.system(bash_command)
-
-    # end time of the application
-    end = time.time()
-    execution_time = end - start
-    
-    return execution_time
-
 
 def data_collector():
     for stressng_value in STRESSNG_VALUES:
@@ -78,25 +63,32 @@ def data_collector():
             # get input_size
             input_size = os.path.getsize(PATH_TO_FILE_DIR + file_name)
 
-            # invoke execute_input(file_name); get (execution_time, average_cpu_workload) as return value
-            execution_time = execute_input(file_name)
-
             # Fetch average cpu utilization from the cpu_bw_mon_now.csv file
             with open(PATH_TO_CPUBWMON_FILE) as cpu_mon:
                 average_cpu_workload = float(cpu_mon.readline()[:-1].split(',')[2])
-                
 
+            # initiate the start time to calculate the execution time of the desired application 
+            start = time.time()
+            
+            # run the tesseract-ocr application with the input (from parameter)
+            bash_command = 'tesseract ' + PATH_TO_FILE_DIR + file_name + ' ' + PATH_SBC_OUTPUT + file_name
+            os.system(bash_command)
+
+            # end time of the application
+            end = time.time()
+            execution_time = end - start
+            
             # finally, write (input_size, average_cpu_workload, execution_time) to the csv file
-            row = [file_name, input_size, execution_time, average_cpu_workload]
+            row = [file_name, input_size, average_cpu_workload, execution_time]
             append_csv_file(row)
         # End of 'for loop' for 'execute_input'
 
         # Terminate the stress-ng process after running for all the inputs for a particular (stressng_value) 
         stressng_process.terminate()
+        time.sleep(10)
         print('Process Terminated')
 
     # End of 'for loop' for 'stressng_values'
-
 # End of function data_collector()
 
 
