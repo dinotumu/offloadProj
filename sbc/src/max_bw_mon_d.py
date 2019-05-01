@@ -14,9 +14,9 @@ PATH_TO_MAXBWMON_FILE = PWD + '/data/max_bw_mon_now.csv'
 while True:
     start = time.time()
 
-    # source = "192.168.1.100"
-    # test = speedtest.Speedtest(source_address=source)
-    test = speedtest.Speedtest()
+    source = "192.168.43.46"
+    test = speedtest.Speedtest(source_address=source)
+    # test = speedtest.Speedtest()
     test.get_best_server()
     test.download()
     test.upload()

@@ -1,0 +1,77 @@
+099b6984e0ddfe35dd79731335cbc726cd780c2d6224a27a6493f1722e904c44
+Tesseract Open Source OCR Engine v4.0.0 with Leptonica
+Tesseract Open Source OCR Engine v4.0.0 with Leptonica
+Tesseract Open Source OCR Engine v4.0.0 with Leptonica
+Tesseract Open Source OCR Engine v4.0.0 with Leptonica
+Warning: Invalid resolution 0 dpi. Using 70 instead.
+Estimating resolution as 146
+Tesseract Open Source OCR Engine v4.0.0 with Leptonica
+Warning: Invalid resolution 0 dpi. Using 70 instead.
+Estimating resolution as 304
+Tesseract Open Source OCR Engine v4.0.0 with Leptonica
+Warning: Invalid resolution 0 dpi. Using 70 instead.
+Estimating resolution as 629
+Tesseract Open Source OCR Engine v4.0.0 with Leptonica
+Warning: Invalid resolution 0 dpi. Using 70 instead.
+Estimating resolution as 160
+Tesseract Open Source OCR Engine v4.0.0 with Leptonica
+Warning: Invalid resolution 0 dpi. Using 70 instead.
+Estimating resolution as 159
+Tesseract Open Source OCR Engine v4.0.0 with Leptonica
+Tesseract Open Source OCR Engine v4.0.0 with Leptonica
+Image too small to scale!! (2x36 vs min width of 3)
+Line cannot be recognized!!
+Tesseract Open Source OCR Engine v4.0.0 with Leptonica
+Tesseract Open Source OCR Engine v4.0.0 with Leptonica
+Tesseract Open Source OCR Engine v4.0.0 with Leptonica
+Warning: Invalid resolution 0 dpi. Using 70 instead.
+Estimating resolution as 158
+Tesseract Open Source OCR Engine v4.0.0 with Leptonica
+Warning: Invalid resolution 0 dpi. Using 70 instead.
+Estimating resolution as 159
+Tesseract Open Source OCR Engine v4.0.0 with Leptonica
+Warning: Invalid resolution 0 dpi. Using 70 instead.
+Estimating resolution as 158
+Tesseract Open Source OCR Engine v4.0.0 with Leptonica
+Warning: Invalid resolution 0 dpi. Using 70 instead.
+Estimating resolution as 159
+Tesseract Open Source OCR Engine v4.0.0 with Leptonica
+Image too small to scale!! (2x36 vs min width of 3)
+Line cannot be recognized!!
+Tesseract Open Source OCR Engine v4.0.0 with Leptonica
+Warning: Invalid resolution 0 dpi. Using 70 instead.
+Estimating resolution as 160
+Tesseract Open Source OCR Engine v4.0.0 with Leptonica
+Tesseract Open Source OCR Engine v4.0.0 with Leptonica
+Tesseract Open Source OCR Engine v4.0.0 with Leptonica
+Warning: Invalid resolution 0 dpi. Using 70 instead.
+Estimating resolution as 158
+Tesseract Open Source OCR Engine v4.0.0 with Leptonica
+Warning: Invalid resolution 0 dpi. Using 70 instead.
+Estimating resolution as 159
+Tesseract Open Source OCR Engine v4.0.0 with Leptonica
+Warning: Invalid resolution 0 dpi. Using 70 instead.
+Estimating resolution as 158
+Tesseract Open Source OCR Engine v4.0.0 with Leptonica
+Warning: Invalid resolution 0 dpi. Using 70 instead.
+Estimating resolution as 159
+tesseract-cn
+tesseract-cn
+Remote Execution Time:  92.0669014453888
+executing 01.pnglocally
+executing 02.pnglocally
+executing 03.pnglocally
+executing 04.pnglocally
+executing 05.pnglocally
+executing 06.pnglocally
+offloading 07.png
+executing 08.pnglocally
+offloading 09.png
+executing 10.pnglocally
+offloading 11.png
+executing 12.pnglocally
+offloading 13.png
+offloading 14.png
+offloading 15.png
+offloading 16.png
+Implemented Algorithm Execution Time:  83.38435196876526

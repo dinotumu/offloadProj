@@ -52,3 +52,14 @@ print('Coefficients: \n', regression_model.coef_)
 # prediction for new input values using the model
 input_ = [[2633, 0.98]]
 print ('Predicted Execution time: \n', regression_model.predict(input_) )
+
+
+# Y_pred = regression_model.predict(X_test)
+
+# print(metrics.mean_absolute_error(y_true, y_pred))
+# print(metrics.mean_squared_error(y_true, y_pred))
+# print(np.sqrt(metrics.mean_squared_error(y_true, y_pred)))
+
+# print(X_test)
+# print(Y_test)
+# print(Y_pred)
